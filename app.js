@@ -18,7 +18,6 @@ db.on('error', function(err){
   console.log('DB ERROR : ', err);
 });
 
-app.set('view engine', 'ejs');
 app.use(cors())
 app.use(express.static(__dirname+'/public'));
 app.use(bodyParser.json());
@@ -27,28 +26,20 @@ app.use(bodyParser.urlencoded({extended:true}));
 var boardSchema = mongoose.Schema({
     title:{type:String, required:true, unique:true},
     main:{type:String},
+    index:{type:Number},
   });
   var Contact = mongoose.model('contacts', boardSchema);
 
-  app.get('/', function(req, res){
-    res.redirect('/contacts');
-  });
-
-  app.get('/contacts', function(req, res){
+  app.get('/api', function(req, res){
     Contact.find({}, function(err, contacts){
       if(err) return res.json(err);
       res.send({contact: contacts});
     });
   });
-
-  app.get('/contacts/new', function(req, res){
-    res.render('contacts/new');
-  });
-
-  app.post('/contacts', function(req, res){
+  app.post('/api', function(req, res){
     Contact.create(req.body, function(err, contact){
-      if(err) return res.json(err);
-      res.redirect('/contacts');
+      if(err) return console.log(err);
+      console.log(contact)
     });
   });
 
