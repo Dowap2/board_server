@@ -26,7 +26,6 @@ app.use(bodyParser.urlencoded({extended:true}));
 var boardSchema = mongoose.Schema({
     title:{type:String, required:true, unique:true},
     main:{type:String},
-    index:{type:Number},
   });
   var Contact = mongoose.model('contacts', boardSchema);
 
@@ -34,13 +33,18 @@ var boardSchema = mongoose.Schema({
     Contact.find({}, function(err, contacts){
       if(err) return res.json(err);
       res.send({contact: contacts});
-    });
+  });
   });
   app.post('/api', function(req, res){
     Contact.create(req.body, function(err, contact){
       if(err) return console.log(err);
-      console.log(contact)
+  });
+  app.delete('/api', function(req, res){
+    Contact.deleteOne({title: req.body.title}, function(err){
+      if(err) return console.log("error");
+      console.log(req.body.title)
     });
+  });
   });
 
 var port = 8000;
