@@ -34,15 +34,26 @@ var boardSchema = mongoose.Schema({
       if(err) return res.json(err);
       res.send({contact: contacts});
   });
+
   });
+
   app.post('/api', function(req, res){
     Contact.create(req.body, function(err, contact){
       if(err) return console.log(err);
   });
-  app.delete('/api', function(req, res){
-    Contact.deleteOne({title: req.body.title}, function(err){
+
+  app.put('/api' , function(req, res){
+    console.log(req)
+    Contact.update({_id: req.body.params._id} , {$set: {title: req.body.data.title , main: req.body.data.main}}, function(err){
       if(err) return console.log("error");
-      console.log(req.body.title)
+      console.log(req)
+    })
+  })
+
+  app.delete('/api', function(req, res){
+    Contact.deleteOne({_id: req.body.id}, function(err){
+      if(err) return console.log("error");
+      console.log(req)
     });
   });
   });
