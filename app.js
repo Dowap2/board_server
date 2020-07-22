@@ -26,6 +26,9 @@ app.use(bodyParser.urlencoded({extended:true}));
 var boardSchema = mongoose.Schema({
     title:{type:String, required:true, unique:true},
     main:{type:String},
+    time:{type:String},
+    like:{type:Number},
+    bad:{type:Number},
   });
   var Contact = mongoose.model('contacts', boardSchema);
 
@@ -40,12 +43,20 @@ var boardSchema = mongoose.Schema({
   app.post('/api', function(req, res){
     Contact.create(req.body, function(err, contact){
       if(err) return console.log(err);
+      console.log(req.body)
   });
 
   app.put('/api' , function(req, res){
     console.log(req)
     Contact.update({_id: req.body.params._id} , {$set: {title: req.body.data.title , main: req.body.data.main}}, function(err){
       if(err) return console.log("error");
+      console.log(req)
+    })
+  })
+  app.put('/api/like' , function(req, res){
+    console.log(req)
+    Contact.update({_id: req.body.params._id} , {$set: {like: req.body.data.like , bad: req.body.data.bad}}, function(err){
+      if(err) return console.log(err);
       console.log(req)
     })
   })
